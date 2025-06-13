@@ -1,22 +1,22 @@
-"""
-URL configuration for config project.
+""" Конфигурация URL для проекта config.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Список urlpatterns сопоставляет URL-адреса с представлениями.
+Дополнительную информацию см.: https://docs.djangoproject.com/en/5.2/topics/http/urls
+Примеры: Представления-функции
+1. Добавьте импорт: от моего_приложения импортируйте представления
+2. Добавьте URL в список urlpatterns: path('', views.home, name='home')
+Представления на основе классов
+1. Добавьте импорт: от представлений другого_приложения импортируйте Home
+2. Добавьте URL в список urlpatterns: path('', Home.as_view(), name='home')
+Подключение другой конфигурации URL
+1. Импортируйте функцию include(): от django.urls импортируйте include, path
+2. Добавьте URL в список urlpatterns: path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("", include("catalog.urls")),
 ]
