@@ -1,8 +1,13 @@
 from django.shortcuts import render
 
+
 def home(request):
-    return render(request,"home.html")
+    """ Загрузка шаблона домашней страницы."""
+
+    return render(request, "home.html")
+
 
 def contacts(request):
-    return render(request,"contacts.html")
+    """ Загрузка шаблона страницы с контактными данными."""
 
+    return render(request, "contacts.html")
