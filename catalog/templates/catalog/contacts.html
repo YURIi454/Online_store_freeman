@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html'%}
+
+{% block title%}Контакты{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center min-vh-50">
+    <div class="col-md-5 col-sm-8">
+        <div class="card text-bg-secondary" style="background-color: black;">
+            <div class="card-body" >
+                <form>
+                    <h3>Оставьте свои контакты !</h3>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Имя">
+                    </div>
+                    <div class="mb-3" >
+                        <input type="email" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" placeholder="Сообщение" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
