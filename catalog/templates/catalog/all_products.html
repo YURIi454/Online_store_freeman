@@ -1,11 +1,11 @@
 {% extends 'catalog/base.html'%}
 
 {% block title%}Главная{% endblock %}
-{% load static %}
+
 
 {% block content %}
 <h1>Наш каталог</h1>
-
+{% load static %}
 <div class="row row-cols-md-3 ">
     {% for prod in product %}
 
@@ -20,8 +20,11 @@
                 <h6> Добавлен: {{ prod.created_at | date:"d M Y" }}.</h6>
                 <h6> Изменён: {{ prod.created_at | date:"d M Y" }}.</h6>
 
-                <img src="{{ prod.image.url }}" alt="Логотип"/>
-
+                {% if prod.image %}
+                <img src="{{ prod.image.url }}" alt=" . . . "/>
+                {% else %}
+                <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
+                {% endif %}
                 <a class="btn btn-lg btn-block btn-outline-primary" href="/pay">Купить</a>
                 <a class="btn btn-lg btn-block btn-outline-primary" href="/one_product/{{prod.id}}/">Подробно</a>
 
@@ -30,5 +33,5 @@
     </div>
 
     {% endfor %}
-{% endblock %}
+    {% endblock %}
 </div>
