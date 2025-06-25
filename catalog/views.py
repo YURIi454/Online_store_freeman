@@ -22,7 +22,7 @@ def catalog_pay(request):
 
 
 def catalog_all_product(request):
-    """ Загрузка подшаблона формы оплаты. """
+    """ Загрузка подшаблона всех продуктов. """
 
     product = Product.objects.all()
     context = {

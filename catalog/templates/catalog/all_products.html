@@ -1,5 +1,5 @@
 {% extends 'catalog/base.html'%}
-
+{% load my_tags %}
 {% block title%}Главная{% endblock %}
 
 
@@ -21,13 +21,15 @@
                 <h6> Изменён: {{ prod.created_at | date:"d M Y" }}.</h6>
 
                 {% if prod.image %}
-                <img src="{{ prod.image.url }}" alt=" . . . "/>
+                <img src="{{ prod.image | media_filter }}" style="width: 350px">
                 {% else %}
                 <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
+                <div>
                 <a class="btn btn-lg btn-block btn-outline-primary" href="/pay">Купить</a>
                 <a class="btn btn-lg btn-block btn-outline-primary" href="/one_product/{{prod.id}}/">Подробно</a>
 
+            </div>
             </div>
         </div>
     </div>

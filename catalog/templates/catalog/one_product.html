@@ -1,5 +1,5 @@
 {% extends 'catalog/base.html'%}
-
+{% load my_tags %}
 {% block title%}Продукты{% endblock %}
 {% load static %}
 {% block content %}
@@ -18,7 +18,7 @@
                 <h6> Изменён:{{ product.created_at | date:"d M Y" }}.</h6>
 
                 {% if product.image %}
-                <img src="{{ product.image.url }}" alt=" . . . "/>
+                <img src="{{ product.image | media_filter }}" style="width: 550px">
                 {% else %}
                 <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
