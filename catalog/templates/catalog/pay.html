@@ -1,0 +1,46 @@
+{% extends 'catalog/base.html'%}
+
+{% block title%}Оплата{% endblock %}
+
+{% block content %}
+<style> body { background-color: #FFFFFF; }
+  .payment-form-container { max-width: 500px; margin: auto; padding-top: 50px;
+  border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,.1); background-color: white; }
+  h1 { text-align: center; color: #333; } label { font-weight: bold; } input[type="text"],
+  input[type="email"] { width: 100%; padding: 10px; margin-bottom: 15px;
+  border: 1px solid #ccc; border-radius: 5px; } button.btn-primary
+  { display: block; width: 100%; padding: 15px; font-size: 16px; cursor: pointer; transition: all 0.3s ease-in-out; }
+   button.btn-primary:hover { transform: scale(1.02); }
+</style>
+
+<div class="container payment-form-container p-4">
+    <h1>Оплата заказа</h1>
+    <form action="#" method="POST">
+        <div class="mb-3">
+            <label for="cardNumber">Номер карты:</label>
+            <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" required/>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="expiryDate">Срок действия:</label>
+                <input type="text" id="expiryDate" placeholder="ММ/ГГ" required/>
+            </div>
+            <div class="col-md-6">
+                <label for="cvvCode">CVV-код:</label>
+                <input type="text" id="cvvCode" placeholder="***" required/>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="nameOnCard">Имя владельца карты:</label>
+            <input type="text" id="nameOnCard" placeholder="ФИО держателя карты" required/>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="termsCheckbox" required/>
+            <label class="form-check-label" for="termsCheckbox">Я согласен с условиями обработки персональных
+                данных.</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Подтвердить оплату заказа</button>
+    </form>
+</div>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

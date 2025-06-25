@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Приложение каталог{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+</head>
+<body>
+{% load static %}
+<nav>
+    {% include 'catalog/header.html' %}
+</nav>
+<div class="container text-center ">
+    {% block content %}
+ <h2 class="md-5 text-center"> Главная страница пока в разработке!</h2>
+    <h5 class="md-5 text-center"> Извините за неудобства!</h5>
+    <div class="container">
+    <img src="{% static 'images/sorry.png' %}" alt="Логотип" />
+    {% endblock %}
+</div>
+</div>
+{% include 'catalog/footer.html' %}
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

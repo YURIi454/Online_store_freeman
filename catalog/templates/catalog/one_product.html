@@ -1,0 +1,34 @@
+{% extends 'catalog/base.html'%}
+{% load my_tags %}
+{% block title%}Продукты{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Подробное описание продукта</h2>
+
+<div class="container text-center">
+    <div class="col-12">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal"> {{ product.name}}</h4>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title pricing-card-title">Цена:{{ product.price}} р.</h4>
+                <h6> Описание:{{ product.description}}.</h6>
+                <h6> Добавлен:{{ product.created_at | date:"d M Y" }}.</h6>
+                <h6> Изменён:{{ product.created_at | date:"d M Y" }}.</h6>
+
+                {% if product.image %}
+                <img src="{{ product.image | media_filter }}" style="width: 550px">
+                {% else %}
+                <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
+                {% endif %}
+                <div>
+                    <a class="btn btn-lg btn-block btn-outline-primary" href="/pay">Купить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</div>
+
+{% endblock %}
