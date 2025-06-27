@@ -1,10 +1,24 @@
 {% block content %}
+
+<style>.fixed-size-btn {
+    width: 150px; /* Зафиксируйте ширину */
+    height: 40px; /* Зафиксируйте высоту */
+    display: inline-block; /* Важно для правильной работы */
+    line-height: normal; /* Нормализация высоты строки */
+    vertical-align: middle; /* Выравнивание по центру */
+    text-align: center; /* Текст выровнен по центру */
+}
+</style>
+
 <header>
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <h2 class="my-0 mr-md-auto font-weight-normal">Онлайн магазин</h2>
         <nav class="ms-5">
-            <a class="p-2 btn btn-outline-primary" href="/">Главная</a>
-            <a class="p-2 btn btn-outline-primary" href="/contacts/">Напишите нам</a>
+
+            <a class="p-2 btn btn-outline-info fixed-size-btn" href="/">Главная</a>
+            <a class="p-2 btn btn-outline-success fixed-size-btn" href="/all_products/">Каталог</a>
+            <a class="p-2 btn btn-outline-warning fixed-size-btn" href="/blog/">Блог</a>
+            <a class="p-2 btn btn-outline-secondary fixed-size-btn" href="/contacts/">Напишите нам</a>
 
         </nav>
     </div>

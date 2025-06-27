@@ -1,13 +1,13 @@
 {% extends 'catalog/base.html'%}
 {% load my_tags %}
-{% block title%}Главная{% endblock %}
+{% block title%}Каталог товаров{% endblock %}
 
 
 {% block content %}
-<h1>Наш каталог</h1>
+<h1>Каталог товаров </h1>
 {% load static %}
 <div class="row row-cols-md-3 ">
-    {% for prod in product %}
+    {% for prod in product_list %}
 
     <div class="col-4">
         <div class="card mb-4 box-shadow">
@@ -26,8 +26,8 @@
                 <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
                 <div>
-                <a class="btn btn-lg btn-block btn-outline-primary" href="/pay">Купить</a>
-                <a class="btn btn-lg btn-block btn-outline-primary" href="/one_product/{{prod.id}}/">Подробно</a>
+                <a class="btn btn-lg btn-block btn-outline-warning" href="/pay/">Купить</a>
+                <a class="btn btn-lg btn-block btn-outline-info" href="/one_product/{{prod.pk}}/">Подробно</a>
 
             </div>
             </div>

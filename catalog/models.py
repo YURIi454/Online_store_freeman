@@ -25,7 +25,7 @@ class Product(models.Model):
         max_length=1200,
         null=True,
         blank=True,
-        default= 'нет описания.',
+        default='нет описания.',
         verbose_name='описание')
     image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='изображение')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
@@ -34,7 +34,7 @@ class Product(models.Model):
         max_digits=14,
         null=True,
         blank=True,
-        default= 0.00,
+        default=0.00,
         verbose_name='цена')
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
