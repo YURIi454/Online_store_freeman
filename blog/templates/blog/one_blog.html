@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+{% load my_tags %}
+{% block title%}{{ blog.name}}{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Блог</h2>
+<style>.fixed-size-btn {
+    width: 150px;  height: 40px;
+    display: inline-block;  line-height: normal;
+    vertical-align: middle; text-align: center;
+}
+</style>
+
+<div class="container text-center">
+    <div class="col-12">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal"> {{ blog.name}}</h4>
+            </div>
+            <div class="card-body">
+                <h6> {{ blog.description}}</h6>
+
+                {% if blog.image %}
+                <img src="{{ blog.image | media_filter }}" style="width: 550px">
+                {% else %}
+                <img src="{% static 'images/no_image_blog.png' %}" alt=" . . . " class="img-fluid"/>
+                {% endif %}
+
+            </div>
+           <div class="container mb-3">
+                <a class="p-1 btn btn-lg btn-block btn-outline-warning fixed-size-btn" href="/blog/update_blog/{{blog.pk}}">Редактировать</a>
+                <a class="p-1 btn btn-lg btn-block btn-outline-danger fixed-size-btn" href="/blog/confirm_delete/{{blog.pk}}">Удалить</a>
+
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</div>
+
+{% endblock %}
