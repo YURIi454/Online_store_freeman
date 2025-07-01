@@ -1,6 +1,6 @@
-{% extends 'catalog/base.html'%}
+{% extends 'base.html'%}
 {% load my_tags %}
-{% block title%}Продукты{% endblock %}
+{% block title%}Информация о товаре{% endblock %}
 {% load static %}
 {% block content %}
 <h2>Подробное описание продукта</h2>
@@ -22,9 +22,12 @@
                 {% else %}
                 <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
-                <div>
-                    <a class="btn btn-lg btn-block btn-outline-primary" href="/pay">Купить</a>
-                </div>
+                <div class="container mb-3">
+
+                <a class="btn btn-lg btn-block btn-outline-success " href="/pay/">Купить</a>
+                <a class="btn btn-lg btn-block btn-outline-secondary " href="#">В корзину</a>
+
+            </div>
             </div>
         </div>
     </div>

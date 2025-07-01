@@ -1,41 +1,41 @@
-from django.shortcuts import render
-
 from catalog.models import Product
 
-
-def catalog_base(request):
-    """ Загрузка базового шаблона."""
-
-    return render(request, "catalog/base.html")
+from django.views.generic import ListView, DetailView, TemplateView
+from django.urls import reverse_lazy
 
 
-def catalog_contacts(request):
-    """ Загрузка шаблона с контактными данными. """
+class CatalogMainView(TemplateView):
+    """ Шаблон главной страницы. """
 
-    return render(request, "catalog/contacts.html")
-
-
-def catalog_pay(request):
-    """ Загрузка подшаблона формы оплаты. """
-
-    return render(request, "catalog/pay.html")
+    template_name = 'main.html'
+    success_url = reverse_lazy('main')
 
 
-def catalog_all_product(request):
-    """ Загрузка подшаблона всех продуктов. """
+class CatalogListView(ListView):
+    """ Шаблон каталога товаров."""
 
-    product = Product.objects.all()
-    context = {
-        "product": product
-    }
-    return render(request, "catalog/all_products.html", context=context)
+    model = Product
+    template_name = 'catalog/all_products.html'
+    success_url = reverse_lazy('catalog:product_list')
 
 
-def catalog_one_product(request,product_id):
-    """ Загрузка подшаблона формы оплаты. """
+class CatalogDetailView(DetailView):
+    """ Шаблон подробной информации о продукте. """
 
-    product = Product.objects.get(id=product_id)
-    context = {
-        "product": product
-    }
-    return render(request, "catalog/one_product.html", context=context)
+    model = Product
+    template_name = 'one_product.html'
+    context_object_name = 'product'
+
+
+class CatalogContactsView(TemplateView):
+    """ Шаблон контактные данные. """
+
+    template_name = 'contacts.html'
+    success_url = reverse_lazy('contacts')
+
+
+class CatalogPayView(TemplateView):
+    """ Шаблон формы оплаты. """
+
+    template_name = 'pay.html'
+    success_url = reverse_lazy('pay')

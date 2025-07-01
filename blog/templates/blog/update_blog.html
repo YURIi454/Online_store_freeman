@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+{% load my_tags %}
+{% block title%}Редактировать блог{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Редактировать блог</h2>
+<style>body   footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #04abe7;  } .fixed-size-btn {
+    width: 150px;  height: 40px;
+    display: inline-block;  line-height: normal;
+    vertical-align: middle; text-align: center;
+}
+</style>
+
+<div class="container ">
+    <div class="col-12">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">>>> <<<</h4>
+            </div>
+            <div class="container  text-center">
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="p-2 btn btn-outline-success fixed-size-btn"  > Сохранить</button>
+                    <a href="/all_blogs/" class="p-2 btn btn-outline-warning fixed-size-btn">Отмена</a>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</div>
+
+
+{% endblock %}

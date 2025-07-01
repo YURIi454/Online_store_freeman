@@ -1,0 +1,49 @@
+{% extends 'base.html'%}
+{% load my_tags %}
+{% block title%}Наши блоги{% endblock %}
+
+{% load static %}
+{% block content %}
+<style> body   footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #FFD700;  } </style>
+<div class="container mb-3">
+    <h1>Наши блоги </h1>
+    <a class="btn btn-lg btn-block btn-outline-info"
+       href="/blog/create_blog/">Начните свой блог</a>
+</div>
+
+<div class="row row-cols-md-3 ">
+    {% for blog in blog_list %}
+
+    <div class="col-4 d-flex align-items-stretch">
+        <div class="card w-100 mb-4 box-shadow">
+            <div class="card-header">
+                <h3 class="my-0 font-weight-normal"> {{ blog.name}}</h3>
+            </div>
+
+            <div class="card-body">
+
+                <h5> {{ blog.description | truncatechars:100}}</h5>
+                <h6> Добавлен: {{ blog.created_at | date:"d M Y" }}</h6>
+                <h6> Просмотры: {{ blog.watch_count}}</h6>
+
+                {% if blog.image %}
+                <img src="{{ blog.image | media_filter }}" style="width: 350px">
+                {% else %}
+                <img src="{% static 'images/no_image_blog.png' %}" alt=" . . . " class="img-fluid"/>
+                {% endif %}
+
+            </div>
+            <div class="container mb-3">
+
+                <a class="btn btn-lg btn-block btn-outline-info"
+                   href="/blog/one_blog/{{blog.pk}}/">Подробно</a>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    {% endfor %}
+    {% endblock %}
+</div>
