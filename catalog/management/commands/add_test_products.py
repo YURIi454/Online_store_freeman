@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand, call_command
+
 from catalog.models import Category, Product
 
 

@@ -1,11 +1,13 @@
 {% extends 'base.html'%}
 {% load my_tags %}
-{% block title%}Удалить блог{% endblock %}
+{% block title%}Удалить товар{% endblock %}
 {% load static %}
 {% block content %}
-<h3>Удалить блог</h3>
-<style>body  footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #c41c2c;  }
-
+<h3>Удалить товар</h3>
+<style>body  footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #c41c2c;  } .fixed-size-btn {
+    width: 150px;  height: 40px;
+    display: inline-block;  line-height: normal;
+    vertical-align: middle; text-align: center;}
 </style>
 
 <div class="container ">
@@ -15,12 +17,12 @@
                 <h3 class="my-0 font-weight-normal">! Внимание !</h3>
             </div>
             <div class="container  text-center">
-                <h3>Подтвердите удаление блога "{{ blog.name}}"</h3>
+                <h3>Подтвердите удаление товара"{{ product.name}}"</h3>
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="p-2 btn btn-outline-danger fixed-size-btn"> Удалить</button>
-                    <a href="/blog/one_blog/{{blog.pk}}" class="p-2 btn btn-outline-success fixed-size-btn">Отмена</a>
+                    <a href="/one_product/{{product.pk }}/" class="p-2 btn btn-outline-success fixed-size-btn">Отмена</a>
                 </form>
 
 

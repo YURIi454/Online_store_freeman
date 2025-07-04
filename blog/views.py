@@ -1,17 +1,23 @@
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
+from blog.forms import BlogForm
 from blog.models import Blog
-from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 
 class BlogCreateView(CreateView):
     """ Создание нового блога. """
 
-    model = Blog
-    fields = ["name", "description", "image", "publication"]
+    form_class = BlogForm
+
     template_name = "blog/create_blog.html"
     success_url = reverse_lazy('blog:all_blogs')
+
+    def get_success_url(self):
+        """ Перенаправление на страницу созданного блога. """
+
+        return reverse("blog:one_blog", kwargs={"pk": self.object.pk})
 
 
 class BlogListView(ListView):
@@ -34,6 +40,7 @@ class BlogDetailView(DetailView):
 
     def get_object(self, queryset=None):
         """  Увеличение счётчика просмотров"""
+
         self.object = super().get_object(queryset)
         self.object.watch_count += 1
         self.object.save()
@@ -42,15 +49,15 @@ class BlogDetailView(DetailView):
 
 class BlogUpdateView(UpdateView):
     """ Обновление информации в выбранном блоге. """
-
     model = Blog
-    fields = ["name", "description", "image", "publication"]
+    form_class = BlogForm
+
     template_name = "update_blog.html"
 
     def get_success_url(self):
-        """ Перенаправление на страницу созданного блога. """
+        """ Перенаправление на страницу отредактированного блога. """
 
-        return reverse("blog:one_blog", args=[self.kwargs.get("pk")])
+        return reverse("blog:one_blog", kwargs={"pk": self.object.pk})
 
 
 class BlogDeleteView(DeleteView):

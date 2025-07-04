@@ -1,7 +1,10 @@
-from catalog.models import Product
+from django.shortcuts import render
+from django.urls import  reverse_lazy
+from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from django.views.generic import ListView, DetailView, TemplateView
-from django.urls import reverse_lazy
+from catalog.forms import ContactForm, ProductForm
+from catalog.models import Product
 
 
 class CatalogMainView(TemplateView):
@@ -27,11 +30,19 @@ class CatalogDetailView(DetailView):
     context_object_name = 'product'
 
 
-class CatalogContactsView(TemplateView):
+class CatalogContactsView(FormView):
     """ Шаблон контактные данные. """
 
+    form_class = ContactForm
     template_name = 'contacts.html'
-    success_url = reverse_lazy('contacts')
+    success_url = reverse_lazy('catalog:main')
+
+    def post(self, request, *args, **kwargs):
+        """ Вывод шаблона "спасибо" после отправки формы. """
+
+        response = render(request, "thank_you.html", {})
+        response["Refresh"] = "3; url=/"
+        return response
 
 
 class CatalogPayView(TemplateView):
@@ -39,3 +50,39 @@ class CatalogPayView(TemplateView):
 
     template_name = 'pay.html'
     success_url = reverse_lazy('pay')
+
+
+class CatalogCreateView(CreateView):
+    """ Добавление нового продукта."""
+
+    model = Product
+    form_class = ProductForm
+    template_name = 'create_product.html'
+
+    def get_success_url(self):
+        """ Перенаправление на страницу созданного продукта. """
+
+        return reverse_lazy("catalog:one_product", kwargs={"pk": self.object.pk})
+
+
+class CatalogUpdateView(UpdateView):
+    """ Редактирование выбранного  продукта."""
+
+    model = Product
+    form_class = ProductForm
+
+    template_name = 'update_product.html'
+
+    def get_success_url(self):
+        """ Перенаправление на страницу созданного продукта. """
+
+        return reverse_lazy("catalog:one_product", kwargs={"pk": self.object.pk})
+
+
+class CatalogDeleteView(DeleteView):
+    """ Удаление выбранного продукта. """
+
+    model = Product
+
+    template_name = "confirm_delete_product.html"
+    success_url = reverse_lazy('catalog:all_products')
