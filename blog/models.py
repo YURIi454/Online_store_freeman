@@ -9,13 +9,13 @@ class Blog(models.Model):
         max_length=3000,
         null=True,
         blank=True,
-        default='нет содержимого.',
-        verbose_name='содержимое')
-    image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='изображение')
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
-    publication = models.BooleanField(default=False)
-    watch_count = models.PositiveIntegerField(default=0)
+        default='Нет содержимого',
+        verbose_name='Содержимое')
+    image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='Изображение')
+    created_at = models.DateField(auto_now_add=True, verbose_name='Создан')
+    updated_at = models.DateField(auto_now=True, verbose_name='Изменён')
+    publication = models.BooleanField(default=False, verbose_name='Опубликовать')
+    watch_count = models.PositiveIntegerField(default=0, verbose_name='Просмотры')
 
     def __str__(self):
         """ Вывод информации"""

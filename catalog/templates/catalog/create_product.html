@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% load my_tags %}
+{% block title%}Добавить товар{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Добавить товар</h2>
+<style>body   footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #04abe7;  } .fixed-size-btn {
+    width: 150px;  height: 40px;
+    display: inline-block;  line-height: normal;
+    vertical-align: middle; text-align: center;
+}
+</style>
+
+
+<div class="container col-8">
+    <div class="card-body text-white" style="background-color: #04abe7;">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">>>> <<<</h4>
+        </div>
+        <div class="container  text-center mb-3 py-3">
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="p-2 btn btn-outline-light fixed-size-btn"> Сохранить</button>
+                <a href="/all_products/" class="p-2 btn btn-outline-warning fixed-size-btn">Отмена</a>
+
+            </form>
+
+
+        </div>
+    </div>
+
+
+</div>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock %}

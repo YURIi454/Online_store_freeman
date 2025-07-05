@@ -3,7 +3,7 @@
 {% block title%}Информация о товаре{% endblock %}
 {% load static %}
 {% block content %}
-<h2>Подробное описание продукта</h2>
+<h2>Подробное описание товара</h2>
 
 <div class="container text-center">
     <div class="col-12">
@@ -22,10 +22,10 @@
                 {% else %}
                 <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
-                <div class="container mb-3">
+                <div class="container mb-3 py-3">
 
-                <a class="btn btn-lg btn-block btn-outline-success " href="/pay/">Купить</a>
-                <a class="btn btn-lg btn-block btn-outline-secondary " href="#">В корзину</a>
+             <a class="p-1 btn btn-lg btn-block btn-outline-warning fixed-size-btn" href="/update_product/{{product.pk}}">Редактировать</a>
+                <a class="p-1 btn btn-lg btn-block btn-outline-danger fixed-size-btn" href="/delete_product/{{product.pk}}">Удалить</a>
 
             </div>
             </div>
