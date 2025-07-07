@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% block title%}Вход{% endblock %}
+{% load static %}
+
+{% block content %}
+<style>.custom-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    border: 3px solid #ccc;
+    border-radius: 5px;
+}
+</style>
+
+<h1>Вход в систему</h1>
+
+<div class="row text-center">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container col-6 pb-3 text-white" style="background-color: #028A38; border-radius: 5px">
+            <label for="id_username">Ваш email:</label>
+            <input type="text" name="username" id="id_username" class="custom-input"/>
+        </div>
+        <div class="container col-6 pb-3 text-white" style="background-color: #028A38; border-radius: 5px">
+            <label for="id_password">Пароль:</label>
+            <input type="password" name="password" id="id_password" class="custom-input"/>
+        </div>
+
+        <div class="container mt-4">
+            <button type="submit" class="p-2 btn btn-outline-success fixed-size-btn"> Войти</button>
+            <a href="/" class="p-2 btn btn-outline-warning fixed-size-btn">Отмена</a>
+        </div>
+    </form>
+
+</div>
+
+
+{% endblock %}
+

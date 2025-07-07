@@ -12,6 +12,7 @@ urlpatterns = [
     path("one_product/<int:pk>/", views.CatalogDetailView.as_view(), name="one_product"),
     path("contacts/", views.CatalogContactsView.as_view(), name="contacts"),
     path("pay/", views.CatalogPayView.as_view(), name="pay"),
+    path("sorry/", views.CatalogSorryView.as_view(), name="sorry"),
     path("all_blogs/", BlogListView.as_view(), name="all_blogs"),
 
     path("create_product/", views.CatalogCreateView.as_view(), name="create_product"),

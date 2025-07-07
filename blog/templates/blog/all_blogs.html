@@ -7,8 +7,11 @@
 <style> body   footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #FFD700;  } </style>
 <div class="container mb-3">
     <h1>Наши блоги </h1>
+    {% if request.user.is_authenticated %}
     <a class="btn btn-lg btn-block btn-outline-warning"
        href="/blog/create_blog/">Начните свой блог</a>
+    {% else %}
+    {% endif %}
 </div>
 
 <div class="row row-cols-md-3 ">
