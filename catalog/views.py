@@ -51,6 +51,12 @@ class CatalogPayView(TemplateView):
     template_name = 'pay.html'
     success_url = reverse_lazy('pay')
 
+class CatalogSorryView(TemplateView):
+    """ Шаблон страницы в разработке. """
+
+    template_name = 'sorry.html'
+    success_url = reverse_lazy('sorry')
+
 
 class CatalogCreateView(CreateView):
     """ Добавление нового продукта."""

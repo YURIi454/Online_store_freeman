@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block title%}Редактирование{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="container col-8">
+    <div class="card-body " style="background-color: #e3e3e3;border-radius: 5px">
+        <div class="card-header">
+            <h2 class="my-0 font-weight-normal">Редактирование профиля - {{ user.username }}</h2>
+        </div>
+        <div class="container  text-center mb-3 py-3">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="p-2 btn btn-outline-success fixed-size-btn"> Сохранить</button>
+                <a href="/" class="p-2 btn btn-outline-warning fixed-size-btn">Отмена</a>
+            </form>
+        </div>
+        </div>
+        </div>
+        {% endblock %}

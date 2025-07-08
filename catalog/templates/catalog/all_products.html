@@ -7,9 +7,13 @@
 
 {% load static %}
 <div class="container mb-3">
+
     <h1>Каталог товаров </h1>
+    {% if request.user.is_authenticated %}
     <a class="btn btn-lg btn-block btn-outline-success"
        href="/create_product/">Добавьте свой товар </a>
+    {% else %}
+    {% endif %}
 </div>
 <div class="row row-cols-md-3 ">
     {% for prod in product_list %}
@@ -39,7 +43,7 @@
 
                 <a class="btn btn-lg btn-block btn-outline-info" href="/pay/">Купить</a>
                 <a class="btn btn-lg btn-block btn-outline-success" href="/one_product/{{prod.pk}}/">Подробно</a>
-                <a class="btn btn-lg btn-block btn-outline-secondary" href="#">В корзину</a>
+                <a class="btn btn-lg btn-block btn-outline-secondary" href="/sorry/">В корзину</a>
 
             </div>
 

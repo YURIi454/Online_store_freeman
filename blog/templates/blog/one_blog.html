@@ -29,10 +29,16 @@
                 {% endif %}
 
             </div>
-           <div class="container mb-3">
-                <a class="p-1 btn btn-lg btn-block btn-outline-warning fixed-size-btn" href="/blog/update_blog/{{blog.pk}}">Редактировать</a>
-                <a class="p-1 btn btn-lg btn-block btn-outline-danger fixed-size-btn" href="/blog/confirm_delete/{{blog.pk}}">Удалить</a>
-
+            <div class="container mb-3">
+                {% if request.user.is_authenticated %}
+                <a class="p-1 btn btn-lg btn-block btn-outline-warning fixed-size-btn"
+                   href="/blog/update_blog/{{blog.pk}}">Редактировать</a>
+                <a class="p-1 btn btn-lg btn-block btn-outline-danger fixed-size-btn"
+                   href="/blog/confirm_delete/{{blog.pk}}">Удалить</a>
+                {% else %}
+                <a class="p-1 btn btn-lg btn-block btn-outline-info fixed-size-btn"
+                   href="/all_blogs/">Назад</a>
+                {% endif %}
             </div>
         </div>
     </div>
