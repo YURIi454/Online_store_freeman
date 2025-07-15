@@ -22,6 +22,7 @@
             <div class="card-body">
                 <h6> {{ blog.description}}</h6>
 
+
                 {% if blog.image %}
                 <img src="{{ blog.image | media_filter }}" style="width: 550px">
                 {% else %}
@@ -30,7 +31,7 @@
 
             </div>
             <div class="container mb-3">
-                {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated and blog.blog_owner == request.user or perms.blog.redact_status_blog %}
                 <a class="p-1 btn btn-lg btn-block btn-outline-warning fixed-size-btn"
                    href="/blog/update_blog/{{blog.pk}}">Редактировать</a>
                 <a class="p-1 btn btn-lg btn-block btn-outline-danger fixed-size-btn"

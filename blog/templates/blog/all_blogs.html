@@ -4,13 +4,35 @@
 
 {% load static %}
 {% block content %}
+
+<style>.publication-moderation {
+    background-color: #068cd0;
+    color: white;
+}
+.publication-approved {
+    background-color: #288b0e;
+    color: white;
+}
+.publication-need-fix {
+    background-color: #ff6c0a;
+    color: white;
+}
+.publication-rejected {
+    background-color: #2e2e2e;
+    color: white;
+}
+</style>
+
 <style> body   footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #FFD700;  } </style>
 <div class="container mb-3">
     <h1>Наши блоги </h1>
+
     {% if request.user.is_authenticated %}
+
     <a class="btn btn-lg btn-block btn-outline-warning"
        href="/blog/create_blog/">Начните свой блог</a>
-    {% else %}
+
+
     {% endif %}
 </div>
 
@@ -21,13 +43,42 @@
         <div class="card w-100 mb-4 box-shadow">
             <div class="card-header">
                 <h3 class="my-0 font-weight-normal"> {{ blog.name}}</h3>
+
+                {% if perms.blog.redact_status_blog or perms.catalog.redact_status_product %}
+                <span class="badge rounded-pill float-end
+                    {% if blog.publication == 'moderation' %}
+                    publication-moderation
+                    {% elif blog.publication == 'approved' %}
+                    publication-approved
+                    {% elif blog.publication == 'need_fix' %}
+                    publication-need-fix
+                    {% elif blog.publication == 'rejected' %}
+                    publication-rejected
+                    {% endif %}">
+                       {{ blog.get_publication_display }}
+                    </span>
+                {% endif %}
+
             </div>
 
             <div class="card-body">
-
                 <h5> {{ blog.description | truncatechars:100}}</h5>
-                <h6> Добавлен: {{ blog.created_at | date:"d M Y" }}</h6>
                 <h6> Просмотры: {{ blog.watch_count}}</h6>
+                {% if request.user.is_authenticated %}
+                <h6> Автор блога: {{ blog.blog_owner.username}}<br> Добавлен: {{ blog.created_at | date:"d M Y" }}</h6>
+                {% endif %}
+                {% if blog.blog_owner == request.user %}
+                <h6 class="badge rounded-pill float-end
+                {% if blog.publication == 'moderation' %}
+                publication-moderation
+                {% elif blog.publication == 'approved' %}
+                publication-approved
+                {% elif blog.publication == 'need_fix' %}
+                publication-need-fix
+                {% elif blog.publication == 'rejected' %}
+                publication-rejected
+                {% endif %}">{{ blog.get_publication_display }}</h6>
+                {% endif %}
 
                 {% if blog.image %}
                 <img src="{{ blog.image | media_filter }}" style="width: 350px">
@@ -35,11 +86,13 @@
                 <img src="{% static 'images/no_image_blog.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
 
+
             </div>
             <div class="container mb-3">
 
                 <a class="btn btn-lg btn-block btn-outline-warning"
                    href="/blog/one_blog/{{blog.pk}}/">Подробно</a>
+
 
             </div>
 

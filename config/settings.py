@@ -12,7 +12,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-STOP_LIST = ["казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар"]
+STOP_LIST = ["казино", "криптовалюта", "крипта", "биржа", "дешево", "бесплатно", "обман", "полиция", "радар", "продажа",
+             "политика", "оружие", ]
 
 ALLOWED_EXTENSIONS = [".jpeg", ".jpg", ".png"]
 
@@ -103,8 +104,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.CustomUser"
 
-
 LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "users:login"
 LOGOUT_REDIRECT_URL = "/"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

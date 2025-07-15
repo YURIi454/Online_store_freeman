@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class  CustomUser(AbstractUser):
-    """ Кастомная модель пользователя. """
+    """ Модель пользователя. """
 
     email = models.EmailField(unique=True, verbose_name="Ваш Email")
     avatar = models.ImageField(upload_to="avatars/",null=True, blank=True,verbose_name="Добавьте аватар")

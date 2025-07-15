@@ -24,10 +24,10 @@
                 {% if product.image %}
                 <img src="{{ product.image | media_filter }}" style="width: 550px">
                 {% else %}
-                <img src="{% static 'images/no_image.png' %}" alt=" . . . " class="img-fluid"/>
+                <img src="{% static 'images/no_image_product.png' %}" alt=" . . . " class="img-fluid"/>
                 {% endif %}
                 <div class="container mb-3 py-3">
-                    {% if request.user.is_authenticated %}
+                    {% if request.user.is_authenticated and product.product_owner == request.user or perms.catalog.redact_status_product %}
                     <a class="p-1 btn btn-lg btn-block btn-outline-warning fixed-size-btn"
                        href="/update_product/{{product.pk}}">Редактировать</a>
                     <a class="p-1 btn btn-lg btn-block btn-outline-danger fixed-size-btn"
