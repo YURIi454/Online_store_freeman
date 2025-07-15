@@ -1,35 +1,32 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from blog.forms import BlogForm
+from blog.forms import BlogForm, BlogFormContentMan, BlogFormAdmin
 from blog.models import Blog
 
 
-class BlogCreateView(CreateView):
-    """ Создание нового блога. """
-
-    form_class = BlogForm
-
-    template_name = "blog/create_blog.html"
-    success_url = reverse_lazy('blog:all_blogs')
-
-    def get_success_url(self):
-        """ Перенаправление на страницу созданного блога. """
-
-        return reverse("blog:one_blog", kwargs={"pk": self.object.pk})
-
-
 class BlogListView(ListView):
-    """ Список блогов."""
+    """ Список блогов с фильтрацией по группам."""
 
     model = Blog
     template_name = "blog/all_blogs.html"
 
     def get_queryset(self):
-        """ Изменение набора данных модели. """
+        """ Фильтр отображения модели. """
 
-        return Blog.objects.filter(publication=True)
+        if self.request.user.is_superuser or self.request.user.groups.filter(name='Administrators').exists():
+            return Blog.objects.all()
+        if (self.request.user.groups.filter(name='Content-managers').exists() or
+                self.request.user.groups.filter(name='Moderators').exists()):
+            return Blog.objects.all()
+        if self.request.user.is_authenticated:
+            return Blog.objects.filter(Q(blog_owner=self.request.user) | Q(publication='approved'))
+        else:
+            return Blog.objects.filter(publication='approved')
 
 
 class BlogDetailView(DetailView):
@@ -47,12 +44,53 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogUpdateView(UpdateView):
-    """ Обновление информации в выбранном блоге. """
-    model = Blog
-    form_class = BlogForm
+class BlogCreateView(LoginRequiredMixin, CreateView):
+    """ Создание нового блога. """
 
+    model = Blog
+    template_name = "blog/create_blog.html"
+
+    def get_form_class(self):
+        """ Выбор нужной формы для администратора или модератора. """
+
+        if self.request.user.is_superuser or self.request.user.groups.filter(name='Administrators').exists():
+            return BlogFormAdmin
+        elif (self.request.user.groups.filter(name='Moderators').exists() or
+              self.request.user.groups.filter(name='Content-managers').exists()):
+            raise PermissionDenied(" Извините у вас недостаточно прав.")
+
+        else:
+            return BlogForm
+
+    def form_valid(self, form):
+        """ Заполнение поля blog_owner данными текущего пользователя. """
+
+        form.instance.blog_owner = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        """ Перенаправление на страницу созданного блога. """
+
+        return reverse("blog:one_blog", kwargs={"pk": self.object.pk})
+
+
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    """ Редактирование блога. """
+
+    model = Blog
     template_name = "update_blog.html"
+
+    def get_form_class(self):
+        """ Выбор нужной формы для пользователя, администратора или модератора. """
+
+        if self.request.user.is_superuser or self.request.user.groups.filter(name='Administrators').exists():
+            return BlogFormAdmin
+        if self.request.user.groups.filter(name='Content-managers').exists():
+            return BlogFormContentMan
+        if self.request.user.is_authenticated and self.get_object().blog_owner == self.request.user:
+            return BlogForm
+        else:
+            raise PermissionDenied(" Извините у вас недостаточно прав.")
 
     def get_success_url(self):
         """ Перенаправление на страницу отредактированного блога. """
@@ -60,9 +98,18 @@ class BlogUpdateView(UpdateView):
         return reverse("blog:one_blog", kwargs={"pk": self.object.pk})
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     """ Удаление выбранного блога. """
 
     model = Blog
-    template_name = "confirm_delete.html"
     success_url = reverse_lazy('blog:all_blogs')
+
+    def get_template_names(self):
+        """ Проверка прав доступа на удаление блога. """
+
+        user = self.request.user
+        if (user == self.object.blog_owner or
+                user.groups.filter(name="Content-managers").exists() or
+                user.groups.filter(name="Administrators").exists()):
+            return ["confirm_delete.html", ]
+        raise PermissionDenied(" Извините у вас недостаточно прав.")

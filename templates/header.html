@@ -26,7 +26,14 @@
         </div>
 
         <div class="d-flex ms-auto">
-            {% if request.user.is_authenticated %}
+            {% if request.path == '/users/update/' %}
+            <a class="p-2 btn btn-outline-success fixed-size-btn" href="/">Назад</a>
+            <a class="p-2 btn btn-outline-info fixed-size-btn" href="{% url 'users:your_profile' %}">Просмотр</a>
+            {% elif request.path == '/users/your_profile/' %}
+            <a class="p-2 btn btn-outline-success fixed-size-btn" href="{% url 'users:update' %}">Назад</a>
+            <a class="p-2 btn btn-outline-info fixed-size-btn" href="/">Главная</a>
+
+            {% elif request.user.is_authenticated %}
             <form method="post" action="{% url 'users:logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="p-2 btn btn-outline-danger fixed-size-btn">Выйти</button>

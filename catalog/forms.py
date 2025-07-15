@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
@@ -35,7 +37,7 @@ class ContactForm(forms.Form):
 
 
 class ProductForm(forms.ModelForm):
-    """ Автоматическое создание формы. """
+    """ Форма создания товара. """
 
     class Meta:
         model = Product
@@ -71,13 +73,16 @@ class ProductForm(forms.ModelForm):
         )
 
     def clean_name(self):
-        """ Проверка на недопустимые имена. """
+        """Проверка на недопустимые имена."""
 
         name = self.cleaned_data.get("name").strip().lower()
 
-        for word in self.stop_list:
-            if word.lower() in name:
-                raise ValidationError(f"Недопустимое название товара '{word}'.")
+        pattern = r'\b({})\b'.format('|'.join(map(re.escape, map(lambda x: x.lower(), self.stop_list))))
+
+        match = re.search(pattern, name)
+        if match:
+            raise forms.ValidationError(f'Недопустимое название товара "{match.group()}".')
+
         return name
 
     def clean_description(self):
@@ -85,9 +90,12 @@ class ProductForm(forms.ModelForm):
 
         description = self.cleaned_data.get("description", "").strip().lower()
 
-        for word in self.stop_list:
-            if word.lower() in description:
-                raise ValidationError(f"Описание содержит недопустимое слово '{word}'.")
+        pattern = r'\b({})\b'.format('|'.join(map(re.escape, map(lambda x: x.lower(), self.stop_list))))
+
+        match = re.search(pattern, description)
+        if match:
+            raise forms.ValidationError(f'В описании присутствует недопустимое слово "{match.group()}".')
+
         return description
 
     def clean_price(self):
@@ -111,3 +119,39 @@ class ProductForm(forms.ModelForm):
             if image.size > max_size:
                 raise ValidationError('Размер файла не должен превышать 5 Мб ')
             return image
+
+
+class ProductFormAdmin(ProductForm, forms.ModelForm):
+    """  Форма создания товара для администратора. """
+
+    class Meta:
+        model = Product
+        fields = ProductForm.Meta.fields + ["publication", "product_owner"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["publication"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )
+        self.fields["product_owner"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )
+
+
+class ProductFormModerator(forms.ModelForm):
+    """  Форма редактирования товара для модератора. """
+
+    class Meta:
+        model = Product
+        fields = ["publication", ]
+
+    def __init__(self, *args, **kwargs):
+        super(ProductFormModerator, self).__init__(*args, **kwargs)
+
+        self.fields["publication"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )

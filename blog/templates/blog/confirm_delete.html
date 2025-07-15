@@ -18,7 +18,7 @@
                 <h3>Подтвердите удаление блога "{{ blog.name}}"</h3>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+
                     <button type="submit" class="p-2 btn btn-outline-danger fixed-size-btn"> Удалить</button>
                     <a href="/blog/one_blog/{{blog.pk}}" class="p-2 btn btn-outline-success fixed-size-btn">Отмена</a>
                 </form>

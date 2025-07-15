@@ -127,7 +127,7 @@ class CustomUserUpdateForm(UserChangeForm):
         """ Проверка размера и типа  изображения. """
 
         image = self.cleaned_data.get('avatar')
-        max_size = 5 * 1024 * 1024
+        max_size = 3 * 1024 * 1024
 
         if image:
             image_name = image.name.lower()

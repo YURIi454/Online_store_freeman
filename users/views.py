@@ -1,11 +1,11 @@
-import secrets
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.shortcuts import render, get_object_or_404, redirect
+
+from django.shortcuts import  get_object_or_404, redirect
 
 from django.urls import reverse_lazy, reverse
 from django.views import View
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
@@ -13,7 +13,7 @@ from .forms import CustomUserCreationForm, CustomUserUpdateForm
 from .models import CustomUser
 
 
-class DetailUserView(View):
+class DetailUserView(LoginRequiredMixin, TemplateView):
     """ Подробная информация о пользователе. """
 
     model = CustomUser
@@ -36,8 +36,8 @@ class RegisterUserView(CreateView):
     def send_welcome_email(self, user_email):
         """ Отправка письма пользователю. """
 
-        subject = ""
-        message = ""
+        subject = "Приветствие."
+        message = " Привет, рады видеть Вас на нашем сайте!"
         from_email = EMAIL_HOST_USER
         recipient_list = [user_email, ]
         send_mail(subject, message, from_email, recipient_list)

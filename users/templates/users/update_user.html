@@ -1,6 +1,11 @@
 {% extends 'base.html'%}
 {% block title%}Редактирование{% endblock %}
 {% load static %}
+{% block navigation_buttons %}
+    <a class="p-2 btn btn-outline-warning fixed-size-btn" href="{% url 'homepage' %}">Назад</a>
+    <a class="p-2 btn btn-outline-info fixed-size-btn" href="{% url 'users:profile_view' %}">Просмотр</a>
+{% endblock %}
+
 {% block content %}
 
 <div class="container col-8">

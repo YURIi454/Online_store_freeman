@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% load my_tags %}
+{% block title%}Ваш профиль {{ user.name }}{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="container col-6 ">
+    <div class="card mb-4 box-shadow ">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal ">
+                Так будет выглядеть ваш профиль на странице
+            </h4>
+
+        </div>
+        <div class="card-body">
+            {% if user.avatar %}
+            <img src="{{ user.avatar | media_filter }}" style="width: 500px">
+            {% else %}
+            <img src="{% static 'images/no_avatar.png' %}" alt=" . . . " class="img-fluid"/>
+            {% endif %}
+
+
+            <h6> Имя:{{ user.username }}.</h6>
+            <h6> На сайте с {{user.date_joined | date:"j F Y" }}</h6>
+            <div class="container mb-3 py-3">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
