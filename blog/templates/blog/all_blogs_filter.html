@@ -1,0 +1,90 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="header-container d-flex justify-content-between align-items-center mb-3">
+    <h1>Блоги по теме "{{ current_topic.get_name_display }}"</h1>
+    {% if request.user.is_authenticated %}
+    <button type="button" class="btn btn-lg btn-block btn-outline-info dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        Выбрать тему
+    </button>
+    <ul class="dropdown-menu btn btn-lg btn-block btn-outline-info">
+        <li>
+            <a class="dropdown-item " href="/all_blogs/">Все темы</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/1">авто / мото</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/2">путешествия</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/3">еда</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/4">гаджеты</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/5">хобби / отдых / спорт</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/sorry/">Избранное</a>
+        </li>
+    </ul>
+    <a class="btn btn-lg btn-block btn-outline-success"
+       href="/create_product/">Начните свой блог </a>
+    {% else %}
+    <a type="button" class="btn btn-lg btn-block btn-outline-info dropdown-toggle" data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Выбрать тему
+    </a>
+    <ul class="dropdown-menu btn btn-lg btn-block btn-outline-info">
+        <li>
+            <a class="dropdown-item " href="/all_blogs/">Все темы</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/1">авто / мото</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/2">путешествия</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/3">еда</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/4">гаджеты</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/5">хобби / отдых / спорт</a>
+        </li>
+
+    </ul>
+    {% endif %}
+
+</div>
+{% if topics %}
+{% for blog in topics %}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col"></th>
+        <th scope="col">Название</th>
+        <th scope="col">Описание</th>
+        <th scope="col">Просмотры</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td><h5>{{ prod.name}}</h5></td>
+        <td><h5>{{ prod.description|truncatechars:100}}</h5></td>
+        <td><h5>{{ prod.watch_count}}</h5></td>
+    </tr>
+
+    </tbody>
+</table>
+{% endfor %}
+{% else %}
+<p class="alert alert-warning fs-4">В выбранной теме пока нет блогов. Будьте первым!</p>
+{% endif %}
+{% endblock %}

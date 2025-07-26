@@ -1,0 +1,90 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="header-container d-flex justify-content-between align-items-center mb-3">
+    <h1>Товары категории "{{ current_category.get_name_display }}"</h1>
+    {% if request.user.is_authenticated %}
+    <button type="button" class="btn btn-lg btn-block btn-outline-info dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        Выбрать категорию
+    </button>
+    <ul class="dropdown-menu btn btn-lg btn-block btn-outline-info">
+        <li>
+            <a class="dropdown-item " href="/all_products/">Все категории</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/5">авто / мото</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/6">путешествия</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/7">еда</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/8">гаджеты</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/9">хобби / отдых / спорт</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/sorry/">Корзина</a>
+        </li>
+    </ul>
+    <a class="btn btn-lg btn-block btn-outline-success"
+       href="/create_product/">Добавьте свой товар </a>
+    {% else %}
+    <a type="button" class="btn btn-lg btn-block btn-outline-info dropdown-toggle" data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Выбрать категорию
+    </a>
+    <ul class="dropdown-menu btn btn-lg btn-block btn-outline-info">
+        <li>
+            <a class="dropdown-item " href="/all_products/">Все категории</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/5">авто / мото</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/6">путешествия</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/7">еда</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/8">гаджеты</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_products_filter/9">хобби / отдых / спорт</a>
+        </li>
+
+    </ul>
+    {% endif %}
+
+</div>
+{% if categories %}
+{% for prod in categories %}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col"></th>
+        <th scope="col">Наименование</th>
+        <th scope="col">Описание</th>
+        <th scope="col">Цена</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td><h5>{{ prod.name}}</h5></td>
+        <td><h5>{{ prod.description|truncatechars:100}}</h5></td>
+        <td><h5>{{ prod.price}}</h5></td>
+    </tr>
+
+    </tbody>
+</table>
+{% endfor %}
+{% else %}
+<p class="alert alert-warning fs-4">В этой категории пока нет товаров. Будьте первым!</p>
+{% endif %}
+{% endblock %}

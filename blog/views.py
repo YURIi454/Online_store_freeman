@@ -4,9 +4,11 @@ from django.db.models import Q
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.core.cache import cache
 
 from blog.forms import BlogForm, BlogFormContentMan, BlogFormAdmin
-from blog.models import Blog
+from blog.models import Blog, Topic
+from blog.services import get_list_blogs
 
 
 class BlogListView(ListView):
@@ -27,6 +29,28 @@ class BlogListView(ListView):
             return Blog.objects.filter(Q(blog_owner=self.request.user) | Q(publication='approved'))
         else:
             return Blog.objects.filter(publication='approved')
+
+
+class BlogFilterTopic(ListView):
+    """ Список блогов с фильтрацией по теме. """
+
+    model = Topic
+    template_name = 'all_blogs_filter.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        topic_id = self.kwargs.get('pk')
+        current_topic = Topic.objects.get(pk=topic_id)
+        context["topics"] = get_list_blogs(topic_id)
+        context["current_topic"] = current_topic
+        return context
+
+    def get_queryset(self):
+        queryset = cache.get('list_blogs')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('list_blogs', queryset, 60 * 15)
+        return queryset
 
 
 class BlogDetailView(DetailView):

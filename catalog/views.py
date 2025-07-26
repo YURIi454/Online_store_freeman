@@ -1,13 +1,17 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.shortcuts import render
+
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, FormView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-
+from django.core.cache import cache
 from catalog.forms import ContactForm, ProductForm, ProductFormAdmin, ProductFormModerator
-from catalog.models import Product
+from catalog.models import Product, Category
+from catalog.services import get_list_products
 
 
 class CatalogMainView(TemplateView):
@@ -17,6 +21,7 @@ class CatalogMainView(TemplateView):
     success_url = reverse_lazy('main')
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CatalogPayView(TemplateView):
     """ Шаблон формы оплаты. """
 
@@ -24,6 +29,7 @@ class CatalogPayView(TemplateView):
     success_url = reverse_lazy('pay')
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CatalogSorryView(TemplateView):
     """ Шаблон страницы в разработке. """
 
@@ -31,6 +37,7 @@ class CatalogSorryView(TemplateView):
     success_url = reverse_lazy('sorry')
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class CatalogContactsView(FormView):
     """ Шаблон страницы с контактными данными. """
 
@@ -47,7 +54,7 @@ class CatalogContactsView(FormView):
 
 
 class CatalogListView(ListView):
-    """ Список товаров с фильтрацией по группам."""
+    """ Список товаров с фильтрацией по группам пользователей. """
 
     model = Product
     template_name = 'catalog/all_products.html'
@@ -64,6 +71,28 @@ class CatalogListView(ListView):
             return Product.objects.filter(Q(product_owner=self.request.user) | Q(publication='approved'))
         else:
             return Product.objects.filter(publication='approved')
+
+
+class ProductsFilterCategory(ListView):
+    """ Список товаров с фильтрацией по категориям. """
+
+    model = Category
+    template_name = 'all_products_filter.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('pk')
+        current_category = Category.objects.get(pk=category_id)
+        context["categories"] = get_list_products(category_id)
+        context["current_category"] = current_category
+        return context
+
+    def get_queryset(self):
+        queryset = cache.get('list_products')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('list_products', queryset, 60 * 15)
+        return queryset
 
 
 class CatalogDetailView(DetailView):
