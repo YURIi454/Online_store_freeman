@@ -21,18 +21,78 @@
     background-color: #2e2e2e;
     color: white;
 }
+    .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-container img {
+    width: 70px;
+    height: auto;
+}
 </style>
 
 <style> body   footer { padding-top: 3rem; padding-bottom: 3rem; background-color: #FFD700;  } </style>
-<div class="container mb-3">
-    <h1>Наши блоги </h1>
+<div class="header-container d-flex justify-content-between align-items-center mb-3">
+    <h1>Наши блоги</h1>
 
     {% if request.user.is_authenticated %}
+    <button type="button" class="btn btn-lg btn-block btn-outline-info dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        Выбрать тему
+    </button>
+    <ul class="dropdown-menu btn btn-lg btn-block btn-outline-info">
+        <li>
+            <a class="dropdown-item " href="/all_blogs/">Все темы</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/1">авто / мото</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/2">путешествия</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/3">еда</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/4">гаджеты</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/5">хобби / отдых / спорт</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/sorry/">Избранное</a>
+        </li>
+    </ul>
+    <a class="btn btn-lg btn-block btn-outline-success"
+       href="/create_product/">Начните свой блог </a>
+    {% else %}
+    <a type="button" class="btn btn-lg btn-block btn-outline-info dropdown-toggle" data-bs-toggle="dropdown"
+       aria-expanded="false">
+        Выбрать тему
+    </a>
+    <ul class="dropdown-menu btn btn-lg btn-block btn-outline-info">
+        <li>
+            <a class="dropdown-item " href="/all_blogs/">Все темы</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/1">авто / мото</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/2">путешествия</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/3">еда</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/4">гаджеты</a>
+        </li>
+        <li>
+            <a class="dropdown-item " href="/all_blogs_filter/5">хобби / отдых / спорт</a>
+        </li>
 
-    <a class="btn btn-lg btn-block btn-outline-warning"
-       href="/blog/create_blog/">Начните свой блог</a>
-
-
+    </ul>
     {% endif %}
 </div>
 
@@ -92,6 +152,8 @@
 
                 <a class="btn btn-lg btn-block btn-outline-warning"
                    href="/blog/one_blog/{{blog.pk}}/">Подробно</a>
+                <a class="btn btn-lg btn-block btn-outline-secondary"
+                   href="#">В избранное</a>
 
 
             </div>

@@ -4,10 +4,20 @@ from users.models import CustomUser
 
 
 class Category(models.Model):
-    """ Модель Category"""
+    """ Модель категория товаров. """
 
-    name = models.CharField(max_length=150, verbose_name='Наименование')
-    description = models.TextField(max_length=500, verbose_name='Описание')
+    category_list = [
+        ("auto", "авто / мото"),
+        ("travel", "путешествия"),
+        ("food", "еда"),
+        ("devices", "гаджеты"),
+        ("hobby", "хобби / отдых / спорт"),
+    ]
+
+    name = models.CharField(choices=category_list, null=True, blank=True, default="auto", max_length=150,
+                            verbose_name='Категория')
+    description = models.TextField(max_length=500, null=True, blank=True, verbose_name='Описание')
+    slug = models.SlugField(unique=True, null=True)
 
     def __str__(self):
         """ Вывод информации"""
@@ -37,7 +47,7 @@ class Product(models.Model):
         verbose_name='Описание'
     )
     image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='Изображение')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name='Категория')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products', verbose_name='Категория')
     price = models.DecimalField(
         decimal_places=2,
         max_digits=14,
@@ -66,11 +76,12 @@ class Product(models.Model):
     def __str__(self):
         """ Вывод информации"""
 
-        return f'{self.name} {self.description} {self.price}'
+        return f'{self.name} {self.category}'
 
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
         permissions = [
-            ('redact_status_product', 'Изменение статуса публикации товара'),
+            ('change_status_product', 'Изменение статуса публикации товара'),
+            ('change_category_product', 'Изменение категории товара'),
         ]

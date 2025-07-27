@@ -126,7 +126,7 @@ class ProductFormAdmin(ProductForm, forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ProductForm.Meta.fields + ["publication", "product_owner"]
+        fields = ProductForm.Meta.fields + ["publication", "product_owner", "category", ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -139,6 +139,10 @@ class ProductFormAdmin(ProductForm, forms.ModelForm):
             {'class': 'form-select',
              'placeholder': ''}
         )
+        self.fields["category"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )
 
 
 class ProductFormModerator(forms.ModelForm):
@@ -146,12 +150,16 @@ class ProductFormModerator(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ["publication", ]
+        fields = ["publication", "category", ]
 
     def __init__(self, *args, **kwargs):
         super(ProductFormModerator, self).__init__(*args, **kwargs)
 
         self.fields["publication"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )
+        self.fields["category"].widget.attrs.update(
             {'class': 'form-select',
              'placeholder': ''}
         )

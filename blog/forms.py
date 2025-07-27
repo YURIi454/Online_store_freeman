@@ -82,7 +82,7 @@ class BlogFormAdmin(BlogForm, forms.ModelForm):
 
     class Meta:
         model = Blog
-        fields = BlogForm.Meta.fields + ["publication", "blog_owner"]
+        fields = BlogForm.Meta.fields + ["publication", "blog_owner", "topic", ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -95,6 +95,10 @@ class BlogFormAdmin(BlogForm, forms.ModelForm):
             {'class': 'form-select',
              'placeholder': ''}
         )
+        self.fields["topic"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )
 
 
 class BlogFormContentMan(forms.ModelForm):
@@ -102,12 +106,16 @@ class BlogFormContentMan(forms.ModelForm):
 
     class Meta:
         model = Blog
-        fields = ["publication", ]
+        fields = ["publication", "topic", ]
 
     def __init__(self, *args, **kwargs):
         super(BlogFormContentMan, self).__init__(*args, **kwargs)
 
         self.fields["publication"].widget.attrs.update(
+            {'class': 'form-select',
+             'placeholder': ''}
+        )
+        self.fields["topic"].widget.attrs.update(
             {'class': 'form-select',
              'placeholder': ''}
         )
